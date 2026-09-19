@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Holy Souls Tracker</title>
+    <style>
+        body { font-family: "Georgia", serif; background: linear-gradient(180deg, #FFF9C4 0%, #B3E5FC 30%, #424242 85%, #212121 100%); color: #0D47A1; margin: 0; padding: 0; line-height: 1.6; min-height: 100vh; overflow-x: hidden; position: relative; user-select: none; -webkit-user-select: none; }
+        .container { width: 100%; max-width: 550px; margin: 0 auto; padding: 15px; box-sizing: border-box; display: flex; flex-direction: column; min-height: 100vh; }
+        .mary-panel { text-align: center; background: rgba(255, 255, 255, 0.92); border: 4px solid #4FC3F7; border-radius: 26px; padding: 20px; margin-bottom: 15px; box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+        .mary-quote { font-style: italic; font-size: 15px; color: #1565C0; margin-bottom: 10px; font-weight: 700; }
+        .title { font-size: 25px; font-weight: 900; color: #0D47A1; margin: 5px 0; text-transform: uppercase; }
+        .score-row { display: flex; justify-content: space-around; font-family: sans-serif; font-weight: 800; font-size: 14px; color: #1565C0; margin-top: 8px; border-top: 1px solid #E3F2FD; padding-top: 8px; }
+        .card { background-color: #FFFFFF; border: 2px solid #90CAF9; border-radius: 20px; padding: 18px; box-shadow: 0 4px 12 rgba(0,0,0,0.04); text-align: justify; margin-bottom: 15px; }
+        .card-title { font-size: 13px; font-weight: 800; color: #B71C1C; text-transform: uppercase; margin-bottom: 6px; text-align: center; letter-spacing: 0.5px; }
+        .card-text { font-size: 15px; color: #212121; margin: 0; }
+        .canvas-viewport { flex-grow: 1; min-height: 280px; position: relative; margin-bottom: 15px; border-radius: 24px; overflow: hidden; }
+        .purgatory-floor { position: absolute; bottom: 0; width: 100%; height: 50px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; padding: 5px; box-sizing: border-box; }
+        .broken-soul-ember { width: 8px; height: 8px; background-color: #FF5722; border-radius: 50%; box-shadow: 0 0 6px #FF3D00; opacity: 0.6; animation: pulse 1.5s infinite ease-in-out; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(1.3); opacity: 0.9; } }
+        .recite-btn { width: 100%; background: linear-gradient(135deg, #1565C0 0%, #0D47A1 100%); color: #FFF; border: 3px solid #FFF; padding: 16px; border-radius: 30px; font-size: 16px; font-weight: 800; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.2); font-family: sans-serif; text-transform: uppercase; transition: all 0.2s; }
+        .recite-btn:active { transform: scale(0.98); }
+        .reset-btn { background: none; border: none; color: #E3F2FD; font-size: 11px; font-weight: 700; cursor: pointer; padding: 6px; text-transform: uppercase; width: 100%; text-align: center; margin-top: 5px; font-family: sans-serif; }
+        .flying-angel { position: absolute; font-size: 26px; pointer-events: none; z-index: 50; animation: ascend 2.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+        @keyframes ascend { 0% { bottom: 10px; opacity: 1; filter: grayscale(1) brightness(0.4); transform: scale(0.8); } 40% { filter: grayscale(0) brightness(1.2); transform: scale(1.1); } 100% { bottom: 95%; opacity: 0; transform: scale(1.4); } }
+        .gloria-banner { position: absolute; font-family: sans-serif; font-weight: 900; font-size: 11px; color: #FFFDE7; background-color: #FBC02D; padding: 2px 6px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); animation: fade 1.8s ease-out forwards; z-index: 60; pointer-events: none; }
+        @keyframes fade { 0% { opacity: 0; transform: scale(0.7); } 15% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: translateY(-25px); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="mary-panel">
+            <p class="mary-quote">"My soul magnifies the Lord, and my spirit rejoices in God my Savior, for he has looked on the humble estate of his servant." - Our Lady (Luke 1:46-48)</p>
+            <h1 class="title">The Holy Souls</h1>
+            <div class="score-row">
+                <div id="count-lbl">Prayers: 0 / 10</div>
+                <div id="souls-lbl">Souls Helped: 0 / 10,000</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Prayer of St. Gertrude</div>
+            <p class="card-text">Eternal Father, I offer Thee the Most Precious Blood of Thy Divine Son, Jesus, in union with the masses said throughout the world today, for all the holy souls in purgatory, for sinners everywhere, for sinners in the universal church, those in my own home and within my family. Amen.</p>
+        </div>
+
+        <div class="canvas-viewport" id="canvas">
+            <div class="purgatory-floor" id="floor"></div>
+        </div>
+
+        <button class="recite-btn" id="trigger" onclick="addPrayer()">Log Prayer Recitation</button>
+        <button class="reset-btn" onclick="resetApp()">Reset Tracker Progress</button>
+    </div>
+    <script>
+        let count = 0; const MAX = 10;
+        const cv = document.getElementById('canvas');
+        const fl = document.getElementById('floor');
+        function initFloor() { fl.innerHTML = ''; for (let i = 0; i < 35; i++) { const e = document.createElement('div'); e.className = 'broken-soul-ember'; fl.appendChild(e); } }
+        function addPrayer() {
+            if (count < MAX) {
+                count++;
+                document.getElementById('count-lbl').innerText = `Prayers: ${count} / ${MAX}`;
+                document.getElementById('souls-lbl').innerText = `Souls Helped: ${(count * 1000).toLocaleString()} / 10,000`;
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(() => {
+                        const a = document.createElement('div'); a.className = 'flying-angel'; a.innerText = '👼';
+                        const pct = (Math.random() * 8 + i * 9); a.style.left = pct + '%';
+                        a.style.animationDuration = (Math.random() * 0.6 + 2.2) + 's'; cv.appendChild(a);
+                        setTimeout(() => {
+                            const b = document.createElement('div'); b.className = 'gloria-banner'; b.innerText = 'Gloria!';
+                            b.style.left = a.style.left; b.style.bottom = '55%'; cv.appendChild(b);
+                            setTimeout(() => { b.remove(); }, 1800);
+                        }, 900);
+                        setTimeout(() => { a.remove(); }, 3000);
+                    }, i * 100);
+                }
+                if (count === MAX) {
+                    const btn = document.getElementById('trigger');
+                    btn.disabled = true; btn.innerText = "10,000 Souls Released! ✨"; btn.style.background = "#2E7D32";
+                }
+            }
+        }
+        function resetApp() {
+            count = 0; document.getElementById('count-lbl').innerText = `Prayers: 0 / ${MAX}`;
+            document.getElementById('souls-lbl').innerText = `Souls Helped: 0 / 10,000`;
+            const btn = document.getElementById('trigger'); btn.disabled = false; btn.innerText = "Log Prayer Recitation";
+            btn.style.background = "linear-gradient(135deg, #1565C0 0%, #0D47A1 100%)"; initFloor();
+        }
+        initFloor();
+    </script>
+</body>
+</html>
