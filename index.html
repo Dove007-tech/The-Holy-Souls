@@ -61,6 +61,7 @@
         .gloria-banner { position: absolute; font-family: sans-serif; font-weight: 900; font-size: 11px; color: #FFFDE7; background-color: #FBC02D; padding: 2px 6px; border-radius: 8px; box-shadow: 0 3px 8px rgba(0,0,0,0.2); animation: fade 1.8s ease-out forwards; z-index: 60; pointer-events: none; }
         @keyframes fade { 0% { opacity: 0; transform: scale(0.6); } 15% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: translateY(-30px); } }
         
+        /* Language Visibility System */
         .lang-en, .lang-ta { display: none; }
         body.lang-en-active .lang-en { display: block; }
         body.lang-ta-active .lang-ta { display: block; }
@@ -68,6 +69,8 @@
 </head>
 <body class="lang-en-active">
     <div class="container">
+        
+        <!-- Header Panel Cards Area -->
         <div class="mary-panel">
             <p class="mary-quote lang-en">"We must empty Purgatory with our prayers." - St. Pio of Pietrelcina</p>
             <p class="mary-quote lang-ta">"நம்முடைய செபங்களால் உத்தரிப்பு ஸ்தலத்தை நாம் வெற்றுமையாக்க வேண்டும்." - புனித பியோ</p>
@@ -81,18 +84,25 @@
             </div>
             
             <div class="score-row">
-                <div id="count-lbl">Prayers: 0 / 10</div>
-                <div id="souls-lbl">Souls Helped: 0 / 10,000</div>
+                <div id="count-lbl-en" class="lang-en">Prayers: 0 / 10</div>
+                <div id="count-lbl-ta" class="lang-ta">செபங்கள்: 0 / 10</div>
+                
+                <div id="souls-lbl-en" class="lang-en">Souls Helped: 0 / 10,000</div>
+                <div id="souls-lbl-ta" class="lang-ta">மீட்கப்பட்ட ஆத்துமாக்கள்: 0 / 10,000</div>
             </div>
         </div>
 
+        <!-- Clean Independent HTML Document Card Box -->
         <div class="card">
-            <div class="card-title lang-en">Prayer of St. Gertrude</div>
-            <div class="card-title lang-ta">புனித ஜெர்துருத்தம்மாள் செபம்</div>
-            
-            <p class="card-text lang-en">Eternal Father, I offer Thee the Most Precious Blood of Thy Divine Son, Jesus, in union with the masses said throughout the world today, for all the holy souls in purgatory, for sinners everywhere, for sinners in the universal church, those in my own home and within my family. Amen.</p>
+            <div class="lang-en">
+                <div class="card-title">Prayer of St. Gertrude</div>
+                <p class="card-text">Eternal Father, I offer Thee the Most Precious Blood of Thy Divine Son, Jesus, in union with the masses said throughout the world today, for all the holy souls in purgatory, for sinners everywhere, for sinners in the universal church, those in my own home and within my family. Amen.</p>
+            </div>
 
-            <p class="card-text lang-ta">"நித்திய பிதாவே, எங்கள் ஆண்டவராகிய இயேசு கிறிஸ்துவின் விலையேறப் பெற்ற திரு இரத்தத்தை, இன்று உலகம் முழுவதும் நிறைவேற்றப்பட்ட திருப்பலிகளோடு ஒன்றித்து, உத்தரிக்கிற ஸ்தலத்திலுள்ள சகல பரிசுத்த ஆன்மாக்களுக்காகவும், எங்குமுள்ள பாவிகளுக்காகவும், உலகளாவிய திருச்சபையிலிலுள்ள பாவிகளுக்காகவும், எமது இல்லத்திலுள்ளவர்களுக்காகவும், எமது குடும்பத்தினருக்காகவும் ஒப்புக்கொடுக்கிறேன். ஆமென்."</p>
+            <div class="lang-ta">
+                <div class="card-title">புனித ஜெர்துருத்தம்மாள் செபம்</div>
+                <p class="card-text">"நித்திய பிதாவே, எங்கள் ஆண்டவராகிய இயேசு கிறிஸ்துவின் விலையேறப் பெற்ற திரு இரத்தத்தை, இன்று உலகம் முழுவதும் நிறைவேற்றப்பட்ட திருப்பலிகளோடு ஒன்றித்து, உத்தரிக்கிற ஸ்தலத்திலுள்ள சகல பரிசுத்த ஆன்மாக்களுக்காகவும், எங்குமுள்ள பாவிகளுக்காகவும், உலகளாவிய திருச்சபையிலிலுள்ள பாவிகளுக்காகவும், எமது இல்லத்திலுள்ளவர்களுக்காகவும், எமது குடும்பத்தினருக்காகவும் ஒப்புக்கொடுக்கிறேன். ஆமென்."</p>
+            </div>
         </div>
 
         <div class="canvas-viewport" id="canvas">
@@ -103,13 +113,14 @@
         <button class="reset-btn" onclick="resetApp()">Reset Tracker Progress</button>
         <button class="download-offline-btn" onclick="downloadThisApp()">Download App For Offline Use</button>
     </div>
+
     <script>
         let count = 0; const MAX = 10;
         const cv = document.getElementById('canvas');
         const fl = document.getElementById('floor');
         let currentLang = 'en';
 
-        const buttonLabels = {
+        const btnLabels = {
             en: { log: "Log Prayer Recitation", done: "10,000 Souls Released! ✨" },
             ta: { log: "செபத்தைப் பதிவுசெய் 🌹", done: "10,000 ஆன்மாக்கள் மீட்பு! ✨" }
         };
@@ -136,9 +147,4 @@
             if (count < MAX) {
                 count++;
                 
-                const prayersTxt = currentLang === 'en' ? `Prayers: ${count} / ${MAX}` : `செபங்கள்: ${count} / ${MAX}`;
-                const soulsTxt = currentLang === 'en' ? `Souls Helped: ${(count * 1000).toLocaleString()} / 10,000` : `மீட்கப்பட்ட ஆத்துமாக்கள்: ${(count * 1000).toLocaleString()} / 10,000`;
-                
-                document.getElementById('count-lbl').innerText = prayersTxt;
-                document.getElementById('souls-lbl').innerText = soulsTxt;
-                
+                // Track dynamic counter panel values explicitly
