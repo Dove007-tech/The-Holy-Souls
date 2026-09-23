@@ -5,14 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Holy Souls Tracker</title>
     <style>
-        body { font-family: "Georgia", serif; background: linear-gradient(180deg, #FFF59D 0%, #FFE082 15%, #64B5F6 45%, #303030 75%, #1A1A1A 100%); color: #0D47A1; margin: 0; padding: 0; line-height: 1.6; min-height: 100vh; overflow-x: hidden; position: relative; user-select: none; -webkit-user-select: none; }
+        body { 
+            font-family: "Georgia", serif; 
+            background: linear-gradient(180deg, #FFF59D 0%, #FFE082 15%, #64B5F6 45%, #303030 75%, #1A1A1A 100%); 
+            color: #0D47A1; 
+            margin: 0; 
+            padding: 0; 
+            line-height: 1.6; 
+            min-height: 100vh; 
+            overflow-x: hidden; 
+            position: relative; 
+            user-select: none; 
+            -webkit-user-select: none; 
+        }
         .container { width: 100%; max-width: 550px; margin: 0 auto; padding: 15px; box-sizing: border-box; display: flex; flex-direction: column; min-height: 100vh; }
-        .mary-panel { text-align: center; background: radial-gradient(circle, #FFFFFF 70%, #FFFDE7 100%); border: 4px solid #FFD54F; border-radius: 26px; padding: 20px; margin-bottom: 15px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+        .mary-panel { 
+            text-align: center; 
+            background: radial-gradient(circle, #FFFFFF 70%, #FFFDE7 100%); 
+            border: 4px solid #FFD54F; 
+            border-radius: 26px; 
+            padding: 20px; 
+            margin-bottom: 15px; 
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12); 
+        }
         .mary-quote { font-style: italic; font-size: 16px; color: #E65100; margin-bottom: 10px; font-weight: 700; }
         .title { font-size: 25px; font-weight: 900; color: #0D47A1; margin: 5px 0; text-transform: uppercase; }
-        .lang-bar { display: flex; justify-content: center; gap: 12px; margin-bottom: 10px; }
-        .lang-btn { background-color: #FFFDE7; border: 2px solid #0D47A1; color: #0D47A1; padding: 6px 16px; font-size: 13px; font-weight: 700; cursor: pointer; border-radius: 12px; font-family: sans-serif; }
-        .lang-btn.active { background-color: #0D47A1; color: #FFF; }
         .score-row { display: flex; justify-content: space-around; font-family: sans-serif; font-weight: 800; font-size: 14px; color: #1565C0; margin-top: 8px; border-top: 1px solid #FFF9C4; padding-top: 8px; }
         .card { background-color: #FFFFFF; border: 2px solid #90CAF9; border-radius: 20px; padding: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); text-align: justify; margin-bottom: 15px; }
         .card-title { font-size: 14px; font-weight: 800; color: #B71C1C; text-transform: uppercase; margin-bottom: 6px; text-align: center; }
@@ -29,38 +46,21 @@
         @keyframes ascend { 0% { bottom: 30px; opacity: 1; filter: grayscale(0.8) brightness(0.5); transform: scale(0.7); } 35% { filter: grayscale(0) brightness(1.4); transform: scale(1.2); } 100% { bottom: 96%; opacity: 0; transform: scale(1.5) rotate(5deg); } }
         .gloria-banner { position: absolute; font-family: sans-serif; font-weight: 900; font-size: 11px; color: #FFFDE7; background-color: #FBC02D; padding: 2px 6px; border-radius: 8px; animation: fade 1.8s ease-out forwards; z-index: 60; pointer-events: none; }
         @keyframes fade { 0% { opacity: 0; transform: scale(0.6); } 15% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: translateY(-30px); } }
-        .lang-en, .lang-ta { display: none; }
-        body.lang-en-active .lang-en { display: block; }
-        body.lang-ta-active .lang-ta { display: block; }
     </style>
 </head>
-<body class="lang-en-active">
+<body>
     <div class="container">
         <div class="mary-panel">
-            <p class="mary-quote lang-en">"We must empty Purgatory with our prayers." - St. Pio of Pietrelcina</p>
-            <p class="mary-quote lang-ta">"நம்முடைய செபங்களால் உத்தரிப்பு ஸ்தலத்தை நாம் வெற்றுமையாக்க வேண்டும்." - புனித பியோ</p>
-            <h1 class="title lang-en">The Holy Souls</h1>
-            <h1 class="title lang-ta">உத்தரிப்பு ஆத்துமாக்கள்</h1>
-            <div class="lang-bar">
-                <button class="lang-btn active" id="btn-en" onclick="setLanguage('en')">English</button>
-                <button class="lang-btn" id="btn-ta" onclick="setLanguage('ta')">தமிழ்</button>
-            </div>
+            <p class="mary-quote">"We must empty Purgatory with our prayers." - St. Pio of Pietrelcina</p>
+            <h1 class="title">The Holy Souls</h1>
             <div class="score-row">
-                <div id="count-lbl-en" class="lang-en">Prayers: 0 / 10</div>
-                <div id="count-lbl-ta" class="lang-ta">செபங்கள்: 0 / 10</div>
-                <div id="souls-lbl-en" class="lang-en">Souls Helped: 0 / 10,000</div>
-                <div id="souls-lbl-ta" class="lang-ta">மீட்கப்பட்ட ஆத்துமாக்கள்: 0 / 10,000</div>
+                <div id="count-lbl">Prayers: 0 / 10</div>
+                <div id="souls-lbl">Souls Helped: 0 / 10,000</div>
             </div>
         </div>
         <div class="card">
-            <div class="lang-en">
-                <div class="card-title">Prayer of St. Gertrude</div>
-                <p class="card-text">Eternal Father, I offer Thee the Most Precious Blood of Thy Divine Son, Jesus, in union with the masses said throughout the world today, for all the holy souls in purgatory, for sinners everywhere, for sinners in the universal church, those in my own home and within my family. Amen.</p>
-            </div>
-            <div class="lang-ta">
-                <div class="card-title">புнить ஜெர்துருத்தம்மாள் செபம்</div>
-                <p class="card-text">"நித்திய பிதாவே, எங்கள் ஆண்டவராகிய இயேசு கிறிஸ்துவின் விலையேறப் பெற்ற திரு இரத்தத்தை, இன்று உலகம் முழுவதும் நிறைவேற்றப்பட்ட திருப்பலிகளோடு ஒன்றித்து, உத்தரிக்கிற ஸ்தலத்திலுள்ள சகல பரிசுத்த ஆன்மாக்களுக்காகவும், எங்குமுள்ள பாவிகளுக்காகவும், உலகளாவிய திருச்சபையிலிலுள்ள பாவிகளுக்காகவும், எமது இல்லத்திலுள்ளவர்களுக்காகவும், எமது குடும்பத்தினருக்காகவும் ஒப்புக்கொடுக்கிறேன். ஆமென்."</p>
-            </div>
+            <div class="card-title">Prayer of St. Gertrude</div>
+            <p class="card-text">Eternal Father, I offer Thee the Most Precious Blood of Thy Divine Son, Jesus, in union with the masses said throughout the world today, for all the holy souls in purgatory, for sinners everywhere, for sinners in the universal church, those in my own home and within my family. Amen.</p>
         </div>
         <div class="canvas-viewport" id="canvas">
             <div class="purgatory-floor" id="floor"></div>
@@ -72,37 +72,47 @@
         var count = 0; const MAX = 10;
         var cv = document.getElementById('canvas');
         var fl = document.getElementById('floor');
-        var currentLang = 'en';
-        var btnLabels = {
-            en: { log: "Log Prayer Recitation", done: "10,000 Souls Released!" },
-            ta: { log: "செபத்தைப் பதிவுசெய்", done: "10,000 ஆன்மாக்கள் மீட்பு!" }
-        };
         function initFloor() { 
             fl.innerHTML = ''; 
             for (var i = 0; i < 20; i++) { 
-                var s = document.createElement('div'); s.className = 'broken-soul-sprite'; s.innerHTML = '&#129295;'; fl.appendChild(s); 
+                var s = document.createElement('div'); s.className = 'broken-soul-sprite'; s.innerHTML = '🫥'; fl.appendChild(s); 
             } 
             for (var j = 0; j < 12; j++) {
-                var f = document.createElement('div'); f.className = 'purgatory-flame'; f.innerHTML = '&#128293;'; f.style.left = (j * 8.5) + (Math.random() * 4) + '%'; f.style.animationDelay = (Math.random() * 0.8) + 's'; fl.appendChild(f);
+                var f = document.createElement('div'); f.className = 'purgatory-flame'; f.innerHTML = '🔥'; f.style.left = (j * 8.5) + (Math.random() * 4) + '%'; f.style.animationDelay = (Math.random() * 0.8) + 's'; fl.appendChild(f);
             }
         }
         function addPrayer() {
             if (count < MAX) {
                 count++;
-                document.getElementById('count-lbl-en').innerText = "Prayers: " + count + " / " + MAX;
-                document.getElementById('count-lbl-ta').innerText = "செபங்கள்: " + count + " / " + MAX;
-                document.getElementById('souls-lbl-en').innerText = "Souls Helped: " + (count * 1000).toLocaleString() + " / 10,000";
-                document.getElementById('souls-lbl-ta').innerText = "மீட்கப்பட்ட ஆத்துமாக்கள்: " + (count * 1000).toLocaleString() + " / 10,000";
+                document.getElementById('count-lbl').innerText = "Prayers: " + count + " / " + MAX;
+                document.getElementById('souls-lbl').innerText = "Souls Helped: " + (count * 1000).toLocaleString() + " / 10,000";
                 var children = fl.getElementsByClassName('broken-soul-sprite');
                 if (children.length >= 2) { children[0].remove(); children[0].remove(); }
                 var flames = fl.getElementsByClassName('purgatory-flame');
                 for (var i = 0; i < flames.length; i++) { flames[i].style.opacity = (0.3 * (1 - count/MAX)); }
                 for (var k = 0; k < 10; k++) { makeAngel(k); }
                 if (count === MAX) {
-                    var btn = document.getElementById('trigger'); btn.disabled = true; btn.innerText = btnLabels[currentLang].done; btn.style.background = "#2E7D32"; fl.innerHTML = ''; 
+                    var btn = document.getElementById('trigger'); btn.disabled = true; btn.innerText = "10,000 Souls Released!"; btn.style.background = "#2E7D32"; fl.innerHTML = ''; 
                 }
             }
         }
         function makeAngel(i) {
             setTimeout(function() {
-                var a = document.createElement('div'); a.className = 'flying-angel'; a.innerHTML = '&#128124;';
+                var a = document.createElement('div'); a.className = 'flying-angel'; a.innerHTML = '👼';
+                var pct = (Math.random() * 8 + i * 9); a.style.left = pct + '%'; a.style.animationDuration = (Math.random() * 0.5 + 2.1) + 's'; cv.appendChild(a);
+                setTimeout(function() {
+                    var b = document.createElement('div'); b.className = 'gloria-banner'; b.innerText = 'Gloria!'; b.style.left = a.style.left; b.style.bottom = '65%'; cv.appendChild(b);
+                    setTimeout(function() { b.remove(); }, 1800);
+                }, 800);
+                setTimeout(function() { a.remove(); }, 2800);
+            }, i * 100);
+        }
+        function downloadThisApp() {
+            var documentSource = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+            var blobElement = new Blob([documentSource], { type: "text/html" });
+            var anchorLink = document.createElement("a"); anchorLink.href = URL.createObjectURL(blobElement); anchorLink.download = "Holy-Souls-Tracker.html"; document.body.appendChild(anchorLink); anchorLink.click(); document.body.removeChild(anchorLink);
+        }
+        initFloor();
+    </script>
+</body>
+</html>
