@@ -45,7 +45,7 @@
         .canvas-viewport { flex-grow: 1; min-height: 240px; position: relative; margin-bottom: 15px; border-radius: 24px; overflow: hidden; }
         .purgatory-floor { position: absolute; bottom: 0; width: 100%; height: 75px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; padding: 8px; box-sizing: border-box; background: linear-gradient(0deg, #111 20%, rgba(30,30,30,0.85) 100%); border-top: 2px dashed #FF3D00; }
         
-        .broken-soul-sprite { font-size: 18px; opacity: 0.40; filter: grayscale(0.5) contrast(0.8); animation: tremble 2s infinite ease-in-out; display: inline-block; transition: all 0.3s; position: relative; z-index: 10; }
+        .broken-soul-sprite { font-size: 18px; opacity: 0.40; animation: tremble 2s infinite ease-in-out; display: inline-block; transition: all 0.3s; position: relative; z-index: 10; }
         @keyframes tremble { 0%, 100% { transform: translateY(0) scale(0.95); opacity: 0.35; } 50% { transform: translateY(-3px) scale(1.05); opacity: 0.65; } }
         
         .purgatory-flame { position: absolute; bottom: -5px; font-size: 16px; opacity: 0.25; animation: flicker 1.2s infinite ease-in-out; pointer-events: none; z-index: 5; }
@@ -61,7 +61,6 @@
         .gloria-banner { position: absolute; font-family: sans-serif; font-weight: 900; font-size: 11px; color: #FFFDE7; background-color: #FBC02D; padding: 2px 6px; border-radius: 8px; box-shadow: 0 3px 8px rgba(0,0,0,0.2); animation: fade 1.8s ease-out forwards; z-index: 60; pointer-events: none; }
         @keyframes fade { 0% { opacity: 0; transform: scale(0.6); } 15% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: translateY(-30px); } }
         
-        /* Language Visibility System */
         .lang-en, .lang-ta { display: none; }
         body.lang-en-active .lang-en { display: block; }
         body.lang-ta-active .lang-ta { display: block; }
@@ -70,10 +69,9 @@
 <body class="lang-en-active">
     <div class="container">
         
-        <!-- Header Panel Cards Area -->
         <div class="mary-panel">
-            <p class="mary-quote lang-en">"We must empty Purgatory with our prayers." - St. Pio of Pietrelcina</p>
-            <p class="mary-quote lang-ta">"நம்முடைய செபங்களால் உத்தரிப்பு ஸ்தலத்தை நாம் வெற்றுமையாக்க வேண்டும்." - புனித பியோ</p>
+            <p class="mary-quote anonymity lang-en">"We must empty Purgatory with our prayers." - St. Pio of Pietrelcina</p>
+            <p class="mary-quote anonymity lang-ta">"நம்முடைய செபங்களால் உத்தரிப்பு ஸ்தலத்தை நாம் வெற்றுமையாக்க வேண்டும்." - புனித பியோ</p>
             
             <h1 class="title lang-en">The Holy Souls</h1>
             <h1 class="title lang-ta">உத்தரிப்பு ஆத்துமாக்கள்</h1>
@@ -92,7 +90,6 @@
             </div>
         </div>
 
-        <!-- Clean Independent HTML Document Card Box -->
         <div class="card">
             <div class="lang-en">
                 <div class="card-title">Prayer of St. Gertrude</div>
@@ -121,8 +118,8 @@
         let currentLang = 'en';
 
         const btnLabels = {
-            en: { log: "Log Prayer Recitation", done: "10,000 Souls Released! ✨" },
-            ta: { log: "செபத்தைப் பதிவுசெய் 🌹", done: "10,000 ஆன்மாக்கள் மீட்பு! ✨" }
+            en: { log: "Log Prayer Recitation", done: "10,000 Souls Released! \u2728" },
+            ta: { log: "செபத்தைப் பதிவுசெய் \u263A", done: "10,000 ஆன்மாக்கள் மீட்பு! \u2728" }
         };
         
         function initFloor() { 
@@ -130,13 +127,13 @@
             for (let i = 0; i < 20; i++) { 
                 const s = document.createElement('div'); 
                 s.className = 'broken-soul-sprite'; 
-                s.innerText = '🫥'; 
+                s.innerHTML = '&#129295;'; 
                 fl.appendChild(s); 
             } 
             for (let j = 0; j < 12; j++) {
                 const f = document.createElement('div');
                 f.className = 'purgatory-flame';
-                f.innerText = '🔥';
+                f.innerHTML = '&#128293;'; 
                 f.style.left = (j * 8.5) + (Math.random() * 4) + '%';
                 f.style.animationDelay = (Math.random() * 0.8) + 's';
                 fl.appendChild(f);
@@ -147,4 +144,6 @@
             if (count < MAX) {
                 count++;
                 
-                // Track dynamic counter panel values explicitly
+                document.getElementById('count-lbl-en').innerText = `Prayers: ${count} / ${MAX}`;
+                document.getElementById('count-lbl-ta').innerText = `செபங்கள்: ${count} / ${MAX}`;
+                
