@@ -19,7 +19,7 @@
         .card-text { font-size: 15px; color: #212121; margin: 0; }
         .canvas-viewport { flex-grow: 1; min-height: 240px; position: relative; margin-bottom: 15px; border-radius: 24px; overflow: hidden; background: transparent; }
         .purgatory-floor { position: absolute; bottom: 0; width: 100%; height: 75px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; padding: 8px; box-sizing: border-box; background: linear-gradient(0deg, #111 20%, rgba(30,30,30,0.85) 100%); border-top: 2px dashed #FF3D00; }
-        .broken-soul-sprite { font-size: 22px; opacity: 0.50; animation: tremble 2s infinite ease-in-out; display: inline-block; position: relative; z-index: 10; }
+        .broken-soul-sprite { font-size: 22px; opacity: 0.50; animation: tremble 2s infinite ease-in-out; display: inline-block; transition: all 0.3s; position: relative; z-index: 10; }
         @keyframes tremble { 0%, 100% { transform: translateY(0) scale(0.95); opacity: 0.4; } 50% { transform: translateY(-4px) scale(1.1); opacity: 0.7; } }
         .purgatory-flame { position: absolute; bottom: -5px; font-size: 20px; opacity: 0.3; animation: flicker 1.2s infinite ease-in-out; pointer-events: none; z-index: 5; }
         @keyframes flicker { 0%, 100% { transform: translateY(0) scaleX(1) scaleY(1); opacity: 0.2; } 50% { transform: translateY(-10px) scaleX(0.8) scaleY(1.4); opacity: 0.5; } }
@@ -58,7 +58,7 @@
                 <p class="card-text">Eternal Father, I offer Thee the Most Precious Blood of Thy Divine Son, Jesus, in union with the masses said throughout the world today, for all the holy souls in purgatory, for sinners everywhere, for sinners in the universal church, those in my own home and within my family. Amen.</p>
             </div>
             <div class="lang-ta">
-                <div class="card-title">புனித ஜெர்துருத்தம்மாள் செபம்</div>
+                <div class="card-title">புнить ஜெர்துருத்தம்மாள் செபம்</div>
                 <p class="card-text">"நித்திய பிதாவே, எங்கள் ஆண்டவராகிய இயேசு கிறிஸ்துவின் விலையேறப் பெற்ற திரு இரத்தத்தை, இன்று உலகம் முழுவதும் நிறைவேற்றப்பட்ட திருப்பலிகளோடு ஒன்றித்து, உத்தரிக்கிற ஸ்தலத்திலுள்ள சகல பரிசுத்த ஆன்மாக்களுக்காகவும், எங்குமுள்ள பாவிகளுக்காகவும், உலகளாவிய திருச்சபையிலிலுள்ள பாவிகளுக்காகவும், எமது இல்லத்திலுள்ளவர்களுக்காகவும், எமது குடும்பத்தினருக்காகவும் ஒப்புக்கொடுக்கிறேன். ஆமென்."</p>
             </div>
         </div>
@@ -80,10 +80,10 @@
         function initFloor() { 
             fl.innerHTML = ''; 
             for (var i = 0; i < 20; i++) { 
-                var s = document.createElement('div'); s.className = 'broken-soul-sprite'; s.innerHTML = '🫥'; fl.appendChild(s); 
+                var s = document.createElement('div'); s.className = 'broken-soul-sprite'; s.innerHTML = '&#129295;'; fl.appendChild(s); 
             } 
             for (var j = 0; j < 12; j++) {
-                var f = document.createElement('div'); f.className = 'purgatory-flame'; f.innerHTML = '🔥'; f.style.left = (j * 8.5) + (Math.random() * 4) + '%'; f.style.animationDelay = (Math.random() * 0.8) + 's'; fl.appendChild(f);
+                var f = document.createElement('div'); f.className = 'purgatory-flame'; f.innerHTML = '&#128293;'; f.style.left = (j * 8.5) + (Math.random() * 4) + '%'; f.style.animationDelay = (Math.random() * 0.8) + 's'; fl.appendChild(f);
             }
         }
         function addPrayer() {
@@ -97,7 +97,7 @@
                 if (children.length >= 2) { children[0].remove(); children[0].remove(); }
                 var flames = fl.getElementsByClassName('purgatory-flame');
                 for (var i = 0; i < flames.length; i++) { flames[i].style.opacity = (0.3 * (1 - count/MAX)); }
-                for (var k = 0; i < 10; k++) { makeAngel(k); }
+                for (var k = 0; k < 10; k++) { makeAngel(k); }
                 if (count === MAX) {
                     var btn = document.getElementById('trigger'); btn.disabled = true; btn.innerText = btnLabels[currentLang].done; btn.style.background = "#2E7D32"; fl.innerHTML = ''; 
                 }
@@ -105,4 +105,4 @@
         }
         function makeAngel(i) {
             setTimeout(function() {
-                var a = document.createElement('div'); a.className = 'flying-angel'; a.innerHTML = '👼';
+                var a = document.createElement('div'); a.className = 'flying-angel'; a.innerHTML = '&#128124;';
